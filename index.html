@@ -1,0 +1,419 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8f7ff">
+  <meta name="description" content="StudyFlow helps students organize tasks, plan study sessions, and track their progress.">
+  <title>StudyFlow — Your Study Space</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <aside class="sidebar" id="sidebar">
+      <a href="#dashboard" class="brand">
+        <span class="brand-mark">S</span>
+        <span>study<span class="brand-light">flow</span></span>
+      </a>
+
+      <button class="new-task-btn" id="sidebarAddBtn">
+        <span>＋</span> Add a task
+      </button>
+
+      <p class="nav-label">WORKSPACE</p>
+
+      <nav class="side-nav" aria-label="Main navigation">
+        <a href="#dashboard" class="nav-link active" data-view="dashboard">
+          <span class="nav-icon">▦</span> Dashboard
+        </a>
+        <a href="#tasks" class="nav-link" data-view="tasks">
+          <span class="nav-icon">☷</span> My Tasks
+          <span class="nav-count" id="taskNavCount">0</span>
+        </a>
+        <a href="#planner" class="nav-link" data-view="planner">
+          <span class="nav-icon">▦</span> Study Planner
+        </a>
+        <a href="#focus" class="nav-link" data-view="focus">
+          <span class="nav-icon">◷</span> Focus Room
+        </a>
+      </nav>
+
+      <p class="nav-label subject-label">YOUR SUBJECTS</p>
+
+      <div class="subject-list">
+        <div><span class="subject-dot dot-purple"></span> Mathematics</div>
+        <div><span class="subject-dot dot-pink"></span> Science</div>
+        <div><span class="subject-dot dot-blue"></span> English</div>
+        <div><span class="subject-dot dot-orange"></span> Other</div>
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-avatar">S</div>
+        <div class="sidebar-user">
+          <strong>My Study Space</strong>
+          <span>One step at a time ✨</span>
+        </div>
+        <button id="resetBtn" class="icon-btn reset-btn"
+          title="Reset all saved data" aria-label="Reset all saved data">↻</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button id="menuBtn" class="icon-btn mobile-menu"
+          aria-label="Open navigation">☰</button>
+
+        <div class="breadcrumb">
+          <span>Workspace</span><span class="crumb-slash">/</span>
+          <strong id="breadcrumbCurrent">Dashboard</strong>
+        </div>
+
+        <div class="topbar-right">
+          <span class="today-label" id="headerDate">YOUR STUDY SPACE</span>
+          <div class="top-avatar">S</div>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <!-- DASHBOARD -->
+        <section class="view-section" id="dashboardView">
+          <div class="welcome-row">
+            <div>
+              <p class="eyebrow">YOUR PERSONAL LEARNING SPACE</p>
+              <h1>Make today <span class="gradient-text">count.</span></h1>
+              <p class="muted welcome-subtitle">
+                Small steps every day lead to big results.
+              </p>
+            </div>
+
+            <button class="primary-btn" id="topAddBtn">
+              <span>＋</span> New task
+            </button>
+          </div>
+
+          <div class="quote-banner">
+            <div class="quote-icon">✦</div>
+            <div>
+              <p class="quote-text">
+                “The secret of getting ahead is getting started.”
+              </p>
+              <p class="quote-author">YOUR REMINDER FOR TODAY</p>
+            </div>
+            <div class="quote-decoration">✧</div>
+          </div>
+
+          <div class="section-title-row">
+            <div>
+              <h2>Your overview</h2>
+              <p class="muted">A little progress adds up.</p>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <div class="stat-top">
+                <span class="stat-label">Total tasks</span>
+                <span class="stat-icon stat-purple">☷</span>
+              </div>
+              <strong class="stat-number" id="totalTasks">0</strong>
+              <span class="stat-note">All your study tasks</span>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-top">
+                <span class="stat-label">Completed</span>
+                <span class="stat-icon stat-green">✓</span>
+              </div>
+              <strong class="stat-number" id="completedTasks">0</strong>
+              <span class="stat-note">Tasks you've finished</span>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-top">
+                <span class="stat-label">Still to do</span>
+                <span class="stat-icon stat-orange">◷</span>
+              </div>
+              <strong class="stat-number" id="pendingTasks">0</strong>
+              <span class="stat-note">Your remaining tasks</span>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-top">
+                <span class="stat-label">Completion</span>
+                <span class="stat-icon stat-pink">↗</span>
+              </div>
+              <strong class="stat-number" id="completionRate">0%</strong>
+              <span class="stat-note">Overall task progress</span>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="panel tasks-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Today's tasks</h2>
+                  <p class="muted">Focus on what matters next.</p>
+                </div>
+                <button class="text-btn" data-go="tasks">View all ↗</button>
+              </div>
+
+              <div class="task-list" id="dashboardTaskList"></div>
+              <p class="empty-state" id="dashboardEmpty">
+                <span>✧</span>
+                <strong>Your day is a blank page.</strong>
+                Add a task and make a start.
+              </p>
+            </section>
+
+            <section class="panel progress-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Your progress</h2>
+                  <p class="muted">Every task counts.</p>
+                </div>
+                <span class="progress-sparkle">✦</span>
+              </div>
+
+              <div class="progress-ring" id="progressRing">
+                <div class="ring-center">
+                  <strong id="ringPercent">0%</strong>
+                  <span>completed</span>
+                </div>
+              </div>
+
+              <p class="progress-message" id="progressMessage">
+                Your journey starts with one task.
+              </p>
+
+              <div class="progress-legend">
+                <div><span class="legend-dot legend-done"></span> Completed
+                  <strong id="legendDone">0</strong></div>
+                <div><span class="legend-dot legend-pending"></span> Remaining
+                  <strong id="legendPending">0</strong></div>
+              </div>
+            </section>
+          </div>
+
+          <section class="panel quick-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Your study tools</h2>
+                <p class="muted">Choose what you need right now.</p>
+              </div>
+            </div>
+
+            <div class="quick-grid">
+              <button class="quick-card" data-go="tasks">
+                <span class="quick-icon quick-lilac">☷</span>
+                <strong>Organize tasks</strong>
+                <span>Plan your next steps</span>
+                <span class="quick-arrow">↗</span>
+              </button>
+
+              <button class="quick-card" data-go="planner">
+                <span class="quick-icon quick-peach">▦</span>
+                <strong>Plan your week</strong>
+                <span>See upcoming deadlines</span>
+                <span class="quick-arrow">↗</span>
+              </button>
+
+              <button class="quick-card" data-go="focus">
+                <span class="quick-icon quick-mint">◷</span>
+                <strong>Start a focus session</strong>
+                <span>Give one thing your attention</span>
+                <span class="quick-arrow">↗</span>
+              </button>
+            </div>
+          </section>
+        </section>
+
+        <!-- TASKS -->
+        <section class="view-section hidden" id="tasksView">
+          <div class="welcome-row">
+            <div>
+              <p class="eyebrow">LESS STRESS, MORE PROGRESS</p>
+              <h1>My <span class="gradient-text">tasks.</span></h1>
+              <p class="muted welcome-subtitle">
+                Keep your next steps clear and manageable.
+              </p>
+            </div>
+            <button class="primary-btn" id="taskPageAddBtn">＋ Add task</button>
+          </div>
+
+          <section class="panel task-manager-panel">
+            <div class="task-toolbar">
+              <label class="search-box">
+                <span>⌕</span>
+                <input id="taskSearch" type="search"
+                  placeholder="Search tasks..." aria-label="Search tasks">
+              </label>
+
+              <select id="statusFilter" aria-label="Filter tasks by status">
+                <option value="all">All tasks</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+              </select>
+
+              <select id="subjectFilter" aria-label="Filter tasks by subject">
+                <option value="all">All subjects</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Science">Science</option>
+                <option value="English">English</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="task-list full-task-list" id="fullTaskList"></div>
+            <p class="empty-state" id="tasksEmpty">
+              No tasks match your filters.
+            </p>
+          </section>
+        </section>
+
+        <!-- PLANNER -->
+        <section class="view-section hidden" id="plannerView">
+          <div class="welcome-row">
+            <div>
+              <p class="eyebrow">MAKE ROOM FOR WHAT MATTERS</p>
+              <h1>Study <span class="gradient-text">planner.</span></h1>
+              <p class="muted welcome-subtitle">
+                Your upcoming tasks, all in one place.
+              </p>
+            </div>
+            <button class="primary-btn" id="plannerAddBtn">＋ Plan a task</button>
+          </div>
+
+          <section class="panel planner-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Upcoming deadlines</h2>
+                <p class="muted">Tasks are ordered by due date.</p>
+              </div>
+              <span class="calendar-symbol">▦</span>
+            </div>
+            <div id="plannerList" class="planner-list"></div>
+            <p class="empty-state" id="plannerEmpty">
+              No deadlines yet. Add a task with a due date to see it here.
+            </p>
+          </section>
+        </section>
+
+        <!-- FOCUS TIMER -->
+        <section class="view-section hidden" id="focusView">
+          <div class="welcome-row">
+            <div>
+              <p class="eyebrow">ONE THING AT A TIME</p>
+              <h1>Focus <span class="gradient-text">room.</span></h1>
+              <p class="muted welcome-subtitle">
+                Take a breath, choose a task, and begin.
+              </p>
+            </div>
+          </div>
+
+          <section class="focus-card">
+            <div class="focus-orb">✦</div>
+            <p class="eyebrow">YOUR FOCUS SESSION</p>
+            <h2 id="focusModeLabel">Time to focus</h2>
+            <p class="muted" id="focusHint">
+              Choose a session length that works for you.
+            </p>
+
+            <div class="timer-display" id="timerDisplay" aria-live="off">25:00</div>
+
+            <div class="timer-presets">
+              <button class="timer-preset active" data-minutes="25">25 min</button>
+              <button class="timer-preset" data-minutes="15">15 min</button>
+              <button class="timer-preset" data-minutes="5">5 min</button>
+            </div>
+
+            <div class="timer-actions">
+              <button class="primary-btn timer-start" id="timerStart">▶ Start focus</button>
+              <button class="secondary-btn" id="timerReset">↻ Reset</button>
+            </div>
+
+            <p class="focus-footer">You don't have to do everything. Just begin. ✨</p>
+          </section>
+        </section>
+
+        <!-- TASK MODAL -->
+        <div class="modal-backdrop hidden" id="taskModal">
+          <section class="task-modal" role="dialog"
+            aria-modal="true" aria-labelledby="modalTitle">
+
+            <div class="modal-heading">
+              <div>
+                <p class="eyebrow">YOUR NEXT SMALL STEP</p>
+                <h2 id="modalTitle">Create a task</h2>
+              </div>
+              <button class="icon-btn" id="closeModalBtn"
+                aria-label="Close dialog">✕</button>
+            </div>
+
+            <form id="taskForm">
+              <input type="hidden" id="editTaskId">
+
+              <label class="field-label" for="taskTitle">Task name</label>
+              <input class="form-input" id="taskTitle" type="text"
+                maxlength="100" placeholder="e.g. Revise chemical reactions" required>
+
+              <div class="form-row">
+                <div class="form-field">
+                  <label class="field-label" for="taskSubject">Subject</label>
+                  <select class="form-input" id="taskSubject" required>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Science">Science</option>
+                    <option value="English">English</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div class="form-field">
+                  <label class="field-label" for="taskPriority">Priority</label>
+                  <select class="form-input" id="taskPriority">
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                    <option value="Low">Low</option>
+                  </select>
+                </div>
+              </div>
+
+              <label class="field-label" for="taskDueDate">Due date</label>
+              <input class="form-input" id="taskDueDate" type="date">
+
+              <label class="field-label" for="taskNotes">Notes (optional)</label>
+              <textarea class="form-input" id="taskNotes" rows="3"
+                maxlength="500" placeholder="Add a few helpful details..."></textarea>
+
+              <div class="modal-actions">
+                <button type="button" class="secondary-btn" id="cancelModalBtn">
+                  Cancel
+                </button>
+                <button type="submit" class="primary-btn" id="saveTaskBtn">
+                  Save task
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+        <footer class="page-footer">
+          <span>Made for your next small win.</span>
+          <span>STUDYFLOW ✦</span>
+        </footer>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
